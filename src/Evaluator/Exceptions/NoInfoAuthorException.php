@@ -1,6 +1,6 @@
 <?php
 
-namespace uMod\Exceptions\Evaluator;
+namespace uMod\Evaluator\Exceptions;
 
 class NoInfoAuthorException extends InvalidSourceException {
     
