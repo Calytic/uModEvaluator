@@ -1,7 +1,7 @@
 <?php
 namespace uMod\Tests;
 
-class EvaluateTest extends \PHPUnit_Framework_TestCase {
+class EvaluateTest extends \PHPUnit\Framework\TestCase {
     private function getMockSource($name) {
         $testPluginPath = __DIR__.DIRECTORY_SEPARATOR.'Mock'.DIRECTORY_SEPARATOR.$name.'.cs';
         
