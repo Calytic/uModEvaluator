@@ -22,7 +22,6 @@
     "autoload": {
         "psr-4": {
             "uMod\\": "src/",
-            "uMod\\Evaluator\\Exceptions\\": "src/Evaluator/Exceptions",
             "uMod\\Tests\\": "tests/"
         }
     }
