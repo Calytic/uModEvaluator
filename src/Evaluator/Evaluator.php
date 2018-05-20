@@ -6,10 +6,6 @@ class Evaluator {
      * 
      * @param string $source
      * @return \uMod\Evaluator\PluginInfo
-     * @throws \uMod\Evaluator\Exceptions\InvalidSourceException
-     * @throws \uMod\Evaluator\Exceptions\NoInfoAuthorException
-     * @throws \uMod\Evaluator\Exceptions\NoInfoVersionException
-     * @throws \uMod\Evaluator\Exceptions\NoInfoAttributeException
      */
     public function evaluate($source) {
         $pluginInfo = new PluginInfo();
@@ -24,7 +20,6 @@ class Evaluator {
      * Extracts class name from plugin source
      * @param \uMod\Evaluator\PluginInfo $info
      * @param string $source
-     * @throws \uMod\Evaluator\Exceptions\InvalidSourceException
      */
     private function extractClassName(PluginInfo $info, $source) {
         $searchString = 'class ';
@@ -49,9 +44,6 @@ class Evaluator {
      * Extracts Info attribute from plugin source
      * @param \uMod\Evaluator\PluginInfo $info
      * @param string $source
-     * @throws \uMod\Evaluator\Exceptions\NoInfoAuthorException
-     * @throws \uMod\Evaluator\Exceptions\NoInfoVersionException
-     * @throws \uMod\Evaluator\Exceptions\NoInfoAttributeException
      */
     private function extractInfo(PluginInfo $info, $source) {
         $searchString = '[Info(';
