@@ -41,7 +41,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
     function testInvalidAuthor() {
         $source = $this->getMockSource('InvalidAuthor');
         
-        $this->expectException(\uMod\Evaluator\NoInfoAuthorException::class);
+        $this->expectException(\uMod\Evaluator\Exceptions\NoInfoAuthorException::class);
         
         $evaluator = new \uMod\Evaluator\Evaluator();
         
