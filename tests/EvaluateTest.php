@@ -5,7 +5,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
     private function getMockSource($name) {
         $testPluginPath = __DIR__.DIRECTORY_SEPARATOR.'Mock'.DIRECTORY_SEPARATOR.$name.'.cs';
         
-        $source = file_get_contents($testPluginPath);
+        return file_get_contents($testPluginPath);
     }
     
     function testGetVersion() {
