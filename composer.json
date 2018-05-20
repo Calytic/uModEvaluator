@@ -1,5 +1,5 @@
 {
-    "name": "uMod/Evaluator",
+    "name": "umod/evaluator",
     "description": "PHP uMod plugin evaluation/validation",
     "keywords": ["php"],
     "license": "MIT",
