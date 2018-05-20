@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "uMod\\Evaluator\\": "src/",
+            "uMod\\": "src/",
             "uMod\\Evaluator\\Tests\\": "tests/"
         }
     }
