@@ -5,4 +5,5 @@ class PluginInfo {
     public $className;
     public $version;
     public $author;
+    public $namespace;
 }

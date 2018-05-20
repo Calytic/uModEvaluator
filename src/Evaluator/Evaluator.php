@@ -14,6 +14,7 @@ class Evaluator {
     public function evaluate($source) {
         $pluginInfo = new PluginInfo();
         
+        $this->extractNamespace($pluginInfo, $source);
         $this->extractClassName($pluginInfo, $source);
         $this->extractInfo($pluginInfo, $source);
         
@@ -41,8 +42,33 @@ class Evaluator {
             throw new Exceptions\InvalidSourceException("Class is not a plugin");
         }
         
-        $classNameRaw = substr($source, $start, $next - $start);
-        $info->className = trim($classNameRaw);
+        $classname = substr($source, $start, $next - $start);
+        $info->className = trim($classname);
+    }
+    
+    /**
+     * Extracts class name from plugin source
+     * @param PluginInfo $info
+     * @param string $source
+     * @throws Exceptions\InvalidSourceException
+     */
+    private function extractNamespace(PluginInfo $info, $source) {
+        $searchString = 'namespace ';
+        $pos = strpos($source, $searchString);
+        
+        if($pos == false) {
+            throw new Exceptions\InvalidSourceException("Namespace not found");
+        }
+        
+        $start = $pos += strlen($searchString);
+        
+        $next = strpos($source, '{', $start);
+        if($next == false) {
+            throw new Exceptions\InvalidSourceException("Namespace definition invalid");
+        }
+        
+        $namespace = substr($source, $start, $next - $start);
+        $info->namespace = trim($namespace);
     }
     
     /**

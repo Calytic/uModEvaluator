@@ -38,6 +38,16 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals("TestPlugin", $pluginInfo->className);
     }
     
+    function testGetNamespace() {
+        $source = $this->getMockSource('TestPlugin');
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $pluginInfo = $evaluator->evaluate($source);
+        
+        $this->assertEquals("Oxide.Plugins", $pluginInfo->namespace);
+    }
+    
     function testInvalidAuthor() {
         $source = $this->getMockSource('InvalidAuthor');
         
