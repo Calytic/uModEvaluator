@@ -1,5 +1,5 @@
 <?php
-namespace uMod\Evaluator;
+namespace uModEvaluator;
 
 class PluginInfo {
     public $className;
