@@ -1,5 +1,5 @@
 <?php
-namespace uMod\Evaluator\Tests;
+namespace uMod\Tests;
 
 class EvaluateTest extends uModEvaluatorTestCase {
     private function getMockSource($name) {
