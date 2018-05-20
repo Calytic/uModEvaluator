@@ -41,7 +41,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
     function testInvalidAuthor() {
         $source = $this->getMockSource('InvalidAuthor');
         
-        $this->expectException(uMod\Evaluator\Exceptions\NoInfoAuthorException::class);
+        $this->expectException(\uMod\Evaluator\Exceptions\NoInfoAuthorException::class);
         
         $evaluator = new \uMod\Evaluator\Evaluator();
         
@@ -51,7 +51,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
     function testInvalidClass() {
         $source = $this->getMockSource('InvalidClass');
         
-        $this->expectException(uMod\Evaluator\Exceptions\InvalidSourceException::class);
+        $this->expectException(\uMod\Evaluator\Exceptions\InvalidSourceException::class);
         
         $evaluator = new \uMod\Evaluator\Evaluator();
         
@@ -61,7 +61,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
     function testInvalidInfo() {
         $source = $this->getMockSource('InvalidInfo');
         
-        $this->expectException(uMod\Evaluator\Exceptions\NoInfoAttributeException::class);
+        $this->expectException(\uMod\Evaluator\Exceptions\NoInfoAttributeException::class);
         
         $evaluator = new \uMod\Evaluator\Evaluator();
         
@@ -71,7 +71,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
     function testInvalidVersion() {
         $source = $this->getMockSource('InvalidVersion');
         
-        $this->expectException(uMod\Evaluator\Exceptions\NoInfoVersionException::class);
+        $this->expectException(\uMod\Evaluator\Exceptions\NoInfoVersionException::class);
         
         $evaluator = new \uMod\Evaluator\Evaluator();
         
