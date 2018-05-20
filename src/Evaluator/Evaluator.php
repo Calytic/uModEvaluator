@@ -31,14 +31,14 @@ class Evaluator {
         $searchString = 'class ';
         $pos = strpos($source, $searchString);
         
-        if($pos == false) {
+        if($pos === false) {
             throw new Exceptions\InvalidSourceException("Class name not found");
         }
         
         $start = $pos += strlen($searchString);
         
         $next = strpos($source, ':', $start);
-        if($next == false) {
+        if($next === false) {
             throw new Exceptions\InvalidSourceException("Class is not a plugin");
         }
         
@@ -56,14 +56,14 @@ class Evaluator {
         $searchString = 'namespace ';
         $pos = strpos($source, $searchString);
         
-        if($pos == false) {
+        if($pos === false) {
             throw new Exceptions\InvalidSourceException("Namespace not found");
         }
         
         $start = $pos += strlen($searchString);
         
         $next = strpos($source, '{', $start);
-        if($next == false) {
+        if($next === false) {
             throw new Exceptions\InvalidSourceException("Namespace definition invalid");
         }
         
@@ -82,7 +82,7 @@ class Evaluator {
     private function extractInfo(PluginInfo $info, $source) {
         $searchString = '[Info(';
         $pos = strpos($source, $searchString);
-        if($pos == false) {
+        if($pos === false) {
             $searchString = '[Info (';
             $pos = strpos($source, $searchString);
         }
