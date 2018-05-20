@@ -17,11 +17,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "6.5.8",
-        "satooshi/php-coveralls": "v2.0.0"
+        "php-coveralls/php-coveralls": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "uMod\\Evaluator\\": "src/Evaluator",
+            "uMod\\": "src/",
             "uMod\\Tests\\": "tests/"
         }
     }
