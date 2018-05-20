@@ -5,7 +5,11 @@ class Evaluator {
     /**
      * 
      * @param string $source
-     * @return \uMod\Evaluator\PluginInfo
+     * @return PluginInfo
+     * @throws Exceptions\InvalidSourceException
+     * @throws Exceptions\NoInfoAuthorException
+     * @throws Exceptions\NoInfoVersionException
+     * @throws Exceptions\NoInfoAttributeException
      */
     public function evaluate($source) {
         $pluginInfo = new PluginInfo();
@@ -18,22 +22,23 @@ class Evaluator {
     
     /**
      * Extracts class name from plugin source
-     * @param \uMod\Evaluator\PluginInfo $info
+     * @param PluginInfo $info
      * @param string $source
+     * @throws Exceptions\InvalidSourceException
      */
     private function extractClassName(PluginInfo $info, $source) {
         $searchString = 'class ';
         $pos = strpos($source, $searchString);
         
         if($pos == false) {
-            throw new \uMod\Evaluator\Exceptions\InvalidSourceException("Class name not found");
+            throw new Exceptions\InvalidSourceException("Class name not found");
         }
         
         $start = $pos += strlen($searchString);
         
         $next = strpos($source, ':', $start);
         if($next == false) {
-            throw new \uMod\Evaluator\Exceptions\InvalidSourceException("Class is not a plugin");
+            throw new Exceptions\InvalidSourceException("Class is not a plugin");
         }
         
         $classNameRaw = substr($source, $start, $next - $start);
@@ -42,8 +47,11 @@ class Evaluator {
     
     /**
      * Extracts Info attribute from plugin source
-     * @param \uMod\Evaluator\PluginInfo $info
+     * @param PluginInfo $info
      * @param string $source
+     * @throws Exceptions\NoInfoAuthorException
+     * @throws Exceptions\NoInfoVersionException
+     * @throws Exceptions\NoInfoAttributeException
      */
     private function extractInfo(PluginInfo $info, $source) {
         $searchString = '[Info(';
@@ -65,16 +73,16 @@ class Evaluator {
             if(isset($infoData[1])) {
                 $info->author = $infoData[1];
             } else {
-                throw new \uMod\Evaluator\Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
+                throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
             }
 
             if(isset($infoData[2])) {
                 $info->version = $infoData[2];
             } else {
-                throw new \uMod\Evaluator\Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
+                throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
             }
         } else {
-            throw new \uMod\Evaluator\Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
+            throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
         }
     }
 }
