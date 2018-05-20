@@ -96,14 +96,20 @@ class Evaluator {
                 $infoData[$i] = trim(str_replace('"','', $infoItem));
             }
 
+            if(isset($infoData[0])) {
+                $info->title = trim($infoData[0]);
+            } else {
+                throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified');
+            }
+            
             if(isset($infoData[1])) {
-                $info->author = $infoData[1];
+                $info->author = trim($infoData[1]);
             } else {
                 throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
             }
 
             if(isset($infoData[2])) {
-                $info->version = $infoData[2];
+                $info->version = trim($infoData[2]);
             } else {
                 throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
             }
