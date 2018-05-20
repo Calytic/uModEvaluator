@@ -1,5 +1,5 @@
 <?php
-namespace uModEvaluator;
+namespace uMod\Evaluator;
 
 class Evaluator {
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace uModEvaluator\Tests;
+namespace uMod\Evaluator\Tests;
 /**
 * Base test case class
 * @package uMod/uModEvaluator
