@@ -97,4 +97,34 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         
         $evaluator->evaluate($source);
     }
+    
+    function testInvalidVersionNotEnoughParts() {
+        $source = $this->getMockSource('InvalidVersion2');
+        
+        $this->expectException(\uMod\Evaluator\Exceptions\InvalidInfoVersionException::class);
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $evaluator->evaluate($source);
+    }
+    
+    function testInvalidVersionTooManyParts() {
+        $source = $this->getMockSource('InvalidVersion3');
+        
+        $this->expectException(\uMod\Evaluator\Exceptions\InvalidInfoVersionException::class);
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $evaluator->evaluate($source);
+    }
+    
+    function testInvalidVersionNonNumericParts() {
+        $source = $this->getMockSource('InvalidVersion4');
+        
+        $this->expectException(\uMod\Evaluator\Exceptions\InvalidInfoVersionException::class);
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $evaluator->evaluate($source);
+    }
 }

@@ -110,11 +110,30 @@ class Evaluator {
 
             if(isset($infoData[2])) {
                 $info->version = trim($infoData[2]);
+                $this->evaluateVersion($info->version);
             } else {
                 throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
             }
         } else {
             throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
+        }
+    }
+    
+    private function evaluateVersion($version) {
+        if(strpos($version,'.') === false) {
+            throw new Exceptions\InvalidInfoVersionException('Info version invalid, must specify atleast two version parts #.#');
+        }
+        
+        $parts = explode('.', $version);
+        
+        if(count($parts) >= 6) {
+            throw new Exceptions\InvalidInfoVersionException('Info version invalid, too many version parts ('.count($parts).'/5)');
+        }
+        
+        foreach($parts as $part) {
+            if(!is_numeric($part)) {
+                throw new Exceptions\InvalidInfoVersionException('Info version invalid, version part is not numeric ('.$part.')');
+            }
         }
     }
 }
