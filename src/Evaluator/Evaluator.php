@@ -121,7 +121,7 @@ class Evaluator {
     
     private function evaluateVersion($version) {
         if(strpos($version,'.') === false) {
-            throw new Exceptions\InvalidInfoVersionException('Info version invalid, must specify atleast two version parts #.#');
+            throw new Exceptions\InvalidInfoVersionException('Info version invalid, must specify at least two version parts #.#');
         }
         
         $parts = explode('.', $version);
