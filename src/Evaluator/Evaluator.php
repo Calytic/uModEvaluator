@@ -80,15 +80,21 @@ class Evaluator {
      * @throws Exceptions\NoInfoAttributeException
      */
     private function extractInfo(PluginInfo $info, $source) {
-        $searchString = '[Info(';
-        $pos = strpos($source, $searchString);
-        if($pos === false) {
-            $searchString = '[Info (';
+        $search = [
+            '[Info(',
+            '[Info ('
+        ];
+        
+        foreach($search as $searchString) {
             $pos = strpos($source, $searchString);
+            if($pos !== false) {
+                break;
+            }
         }
+        
         if($pos !== false) {
             $starts = $pos + strlen($searchString);
-            $ends = strpos($source, ')]', $starts);
+            $ends = strpos($source, ')', $starts);
 
             $infoString = substr($source, $starts, $ends - $starts);
             $infoData = explode(',', $infoString);
