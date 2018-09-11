@@ -28,6 +28,26 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals("0.1.1", $pluginInfo->version);
     }
     
+    function testGetVersion3() {
+        $source = $this->getMockSource('TestPlugin3');
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $pluginInfo = $evaluator->evaluate($source);
+        
+        $this->assertEquals("0.1.2", $pluginInfo->version);
+    }
+    
+    function testGetVersion4() {
+        $source = $this->getMockSource('TestPlugin4');
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $pluginInfo = $evaluator->evaluate($source);
+        
+        $this->assertEquals("0.1.2", $pluginInfo->version);
+    }
+    
     function testGetAuthor() {
         $source = $this->getMockSource('TestPlugin');
         
