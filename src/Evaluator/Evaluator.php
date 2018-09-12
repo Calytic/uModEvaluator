@@ -83,8 +83,11 @@ class Evaluator {
         $paramsRegex = '/(\w+)(\([^\)]*?(?:(?:(\'|")[^\'"]*?\3)[^\)]*?)*\))/m';
         
         foreach($attrLines as $attrLine) {
+            if(is_array($attrLine)) {
+                $attrLine = array_shift($attrLine);
+            }
             preg_match_all($paramsRegex, $attrLine, $parts, PREG_SET_ORDER, 0);
-            if(count($parts) < 2) {
+            if(count($parts) !== 4) {
                 throw new Exceptions\InvalidSourceException("Attributes invalid");
             }
             
