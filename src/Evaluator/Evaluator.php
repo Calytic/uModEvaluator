@@ -90,12 +90,23 @@ class Evaluator {
             
             $type = $parts[1];
             $params = $parts[2];
+            $infoFound = false;
             
             switch(strtolower(trim($type))) {
                 case 'info':
+                    $infoFound = true;
                     $items = $this->extractInfoParams($info, $params);
-                    if(count($items) < 3) {
-                        throw new Exceptions\InvalidSourceException("Invalid info attribute");
+                    
+                    if(empty($items)) {
+                        throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified');
+                    }
+                    
+                    if(count($items) == 1) {
+                        throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
+                    }
+                    
+                    if(count($items) == 2) {
+                        throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
                     }
                     
                     $info->title = $items[0];
@@ -105,6 +116,10 @@ class Evaluator {
                 case 'description':
                     $info->description = $this->extractDescription($info, $params);
                     break;
+            }
+            
+            if(!$infoFound) {
+                throw new Exceptions\NoInfoAttributeException('Info attribute not found');
             }
         }
     }
