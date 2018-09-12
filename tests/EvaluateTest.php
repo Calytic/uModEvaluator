@@ -68,6 +68,16 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals("0.1.1", $pluginInfo->version);
     }
     
+    function testGetDescription6() {
+        $source = $this->getMockSource('TestPlugin6');
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $pluginInfo = $evaluator->evaluate($source);
+        
+        $this->assertEquals("Some description]1", $pluginInfo->description);
+    }
+    
     function testGetAuthor() {
         $source = $this->getMockSource('TestPlugin');
         
@@ -85,7 +95,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         
         $pluginInfo = $evaluator->evaluate($source);
         
-        $this->assertEquals("TestPlugin", $pluginInfo->className);
+        $this->assertEquals("TestPlugin1", $pluginInfo->className);
     }
     
     function testGetNamespace() {
@@ -105,7 +115,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         
         $pluginInfo = $evaluator->evaluate($source);
         
-        $this->assertEquals("TestPlugin", $pluginInfo->title);
+        $this->assertEquals("TestPlugin1", $pluginInfo->title);
     }
     
     function testInvalidAuthor() {

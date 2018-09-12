@@ -72,7 +72,7 @@ class Evaluator {
     }
     
     private function extractClassAttributes(PluginInfo $info, $source) {
-        $attrRegex = '/\[([^]]+)\]/m';
+        $attrRegex = '/\[([^\]]*?(?:(?:(\'|")[^\'"]*?\2)[^\]]*?)*)\]/';
         
         preg_match_all($attrRegex, $source, $attrLines, PREG_SET_ORDER, 0);
         
@@ -82,12 +82,13 @@ class Evaluator {
         
         $paramsRegex = '/(\w+)(\([^\)]*?(?:(?:(\'|")[^\'"]*?\3)[^\)]*?)*\))/m';
         
+        $infoFound = false;
+        
         foreach($attrLines as $attrLine) {
             if(is_array($attrLine)) {
-                $attrLine = array_shift($attrLine);
+                $attrLine = $attrLine[0];
             }
             preg_match_all($paramsRegex, $attrLine, $attributes, PREG_SET_ORDER, 0);
-            
             foreach($attributes as $parts) {
                 if(count($parts) !== 4) {
                     throw new Exceptions\InvalidSourceException("Attributes invalid: ".count($parts)." - ".print_r($parts, true));
@@ -95,38 +96,40 @@ class Evaluator {
 
                 $type = $parts[1];
                 $params = $parts[2];
-                $infoFound = false;
+                
+                
 
                 switch(strtolower(trim($type))) {
                     case 'info':
                         $infoFound = true;
                         $items = $this->extractInfoParams($info, $params);
 
-                        if(empty($items)) {
-                            throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified '.count($items)." - ".print_r($items, true));
+                        if(count($items) == 0) {
+                            throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified');
                         }
 
                         if(count($items) == 1) {
-                            throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified '.count($items)." - ".print_r($items, true));
+                            throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
                         }
 
                         if(count($items) == 2) {
-                            throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified '.count($items)." - ".print_r($items, true));
+                            throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
                         }
-
+                        
                         $info->title = $items[0];
                         $info->author = $items[1];
                         $info->version = $items[2];
+                        $this->evaluateVersion($info->version);
                         break;
                     case 'description':
                         $info->description = $this->extractDescription($info, $params);
                         break;
                 }
             }
-            
-            if(!$infoFound) {
-                throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
-            }
+        }
+        
+        if(!$infoFound) {
+            throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
         }
     }
     
@@ -143,106 +146,46 @@ class Evaluator {
                 if($inQuote) {
                     $inQuote = false;
                 } else {
-                    $inQuote = false;
+                    $inQuote = true;
                 }
             } elseif($char == ',' && !$inQuote) {
-                $items[] = $buffer;
+                $items[] = trim($buffer);
+                $buffer = '';
+            } elseif(($char == '(' || $char == ')') && !$inQuote) {
+                
             } else {
                 $buffer.=$char;
             }
+        }
+        
+        if(!empty($buffer)) {
+            $items[] = trim($buffer);
         }
         
         return $items;
     }
     
     private function extractDescription(PluginInfo $info, $params) {
-        $start = strpos($params,'"');
+        $start = strpos($params,'"') + 1;
+        $end = strpos($params,'"', $start);
         
-        $end = strpos($params,'"', $start + 1);
-        
-        return substr($params, $start, $start - $end);
+        return substr($params, $start, $end - $start);
     }
-    
-    /**
-     * Extracts Info attribute from plugin source
-     * @param PluginInfo $info
-     * @param string $source
-     * @throws Exceptions\NoInfoAuthorException
-     * @throws Exceptions\NoInfoVersionException
-     * @throws Exceptions\NoInfoAttributeException
-     */
-//    private function extractInfo(PluginInfo $info, $source) {
-//        $startSearch = [
-//            '[Info(',
-//            '[Info ('
-//        ];
-//        
-//        foreach($startSearch as $searchString) {
-//            $pos = strpos($source, $searchString);
-//            if($pos !== false) {
-//                break;
-//            }
-//        }
-//        
-//        $endSearch = [
-//            ')]',
-//            ') ]',
-//            ')'
-//        ];
-//        
-//        if($pos !== false) {
-//            $starts = $pos + strlen($searchString);
-//            
-//            foreach($endSearch as $endSearchString) {
-//                $ends = strpos($source, $endSearchString, $starts);
-//                if($ends !== false) {
-//                    break;
-//                }
-//            }
-//
-//            $infoString = substr($source, $starts, $ends - $starts);
-//            $infoData = explode(',', $infoString);
-//            foreach($infoData as $i => $infoItem) {
-//                $infoData[$i] = trim(str_replace('"','', $infoItem));
-//            }
-//
-//            if(isset($infoData[0])) {
-//                $info->title = trim($infoData[0]);
-//            } else {
-//                throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified');
-//            }
-//            
-//            if(isset($infoData[1])) {
-//                $info->author = trim($infoData[1]);
-//            } else {
-//                throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
-//            }
-//
-//            if(isset($infoData[2])) {
-//                $info->version = trim($infoData[2]);
-//                $this->evaluateVersion($info->version);
-//            } else {
-//                throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
-//            }
-//        } else {
-//            throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
-//        }
-//    }
-    
+        
     private function evaluateVersion($version) {
         if(strpos($version,'.') === false) {
-            throw new Exceptions\InvalidInfoVersionException('Info version invalid, must specify at least two version parts #.#');
+            throw new Exceptions\InvalidInfoVersionException('Info version invalid ('.$version.'), must specify at least two version parts #.#');
         }
         
         $parts = explode('.', $version);
         
         if(count($parts) >= 6) {
-            throw new Exceptions\InvalidInfoVersionException('Info version invalid, too many version parts ('.count($parts).'/5)');
+            throw new Exceptions\InvalidInfoVersionException('Info version invalid ('.$version.'), too many version parts ('.count($parts).'/5)');
         }
         
         foreach($parts as $part) {
             if(!is_numeric($part)) {
-                throw new Exceptions\InvalidInfoVersionException('Info version invalid, version part is not numeric ('.$part.')');
+                throw new Exceptions\InvalidInfoVersionException('Info version invalid ('.$part.'), version part is not numeric ('.$part.')');
             }
         }
     }
