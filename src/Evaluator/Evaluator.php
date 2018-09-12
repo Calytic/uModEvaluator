@@ -77,14 +77,14 @@ class Evaluator {
         preg_match_all($attrRegex, $source, $attrLines, PREG_SET_ORDER, 0);
         
         if(count($attrLines) == 0) {
-            throw new Exceptions\InvalidSourceException("No attributes present");
+            throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
         }
         
         $paramsRegex = '/(\w+)(\([^\)]*?(?:(?:(\'|")[^\'"]*?\3)[^\)]*?)*\))/m';
         
         foreach($attrLines as $attrLine) {
             preg_match_all($paramsRegex, $attrLine, $parts, PREG_SET_ORDER, 0);
-            if(count($parts) !== 4) {
+            if(count($parts) < 2) {
                 throw new Exceptions\InvalidSourceException("Attributes invalid");
             }
             
@@ -119,7 +119,7 @@ class Evaluator {
             }
             
             if(!$infoFound) {
-                throw new Exceptions\NoInfoAttributeException('Info attribute not found');
+                throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
             }
         }
     }
