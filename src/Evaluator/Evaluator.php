@@ -15,8 +15,8 @@ class Evaluator {
         $pluginInfo = new PluginInfo();
         
         $this->extractNamespace($pluginInfo, $source);
-        $this->extractClassName($pluginInfo, $source);
-        $this->extractClassAttributes($pluginInfo, $source);
+        $end = $this->extractClassName($pluginInfo, $source);
+        $this->extractClassAttributes($pluginInfo, $source, $end);
         
         return $pluginInfo;
     }
@@ -44,6 +44,7 @@ class Evaluator {
         
         $classname = substr($source, $start, $next - $start);
         $info->className = trim($classname);
+        return $start;
     }
     
     /**
@@ -71,7 +72,9 @@ class Evaluator {
         $info->namespace = trim($namespace);
     }
     
-    private function extractClassAttributes(PluginInfo $info, $source) {
+    private function extractClassAttributes(PluginInfo $info, $source, $end) {
+        $source = substr($source, 0, $end);
+        
         $attrRegex = '/\[([^\]]*?(?:(?:(\'|")[^\'"]*?\2)[^\]]*?)*)\]/';
         
         preg_match_all($attrRegex, $source, $attrLines, PREG_SET_ORDER, 0);
