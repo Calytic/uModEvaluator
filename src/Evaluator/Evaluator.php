@@ -86,39 +86,42 @@ class Evaluator {
             if(is_array($attrLine)) {
                 $attrLine = array_shift($attrLine);
             }
-            preg_match_all($paramsRegex, $attrLine, $parts, PREG_SET_ORDER, 0);
-            if(count($parts) !== 4) {
-                throw new Exceptions\InvalidSourceException("Attributes invalid: ".print_r($parts, true));
-            }
+            preg_match_all($paramsRegex, $attrLine, $attributes, PREG_SET_ORDER, 0);
             
-            $type = $parts[1];
-            $params = $parts[2];
-            $infoFound = false;
-            
-            switch(strtolower(trim($type))) {
-                case 'info':
-                    $infoFound = true;
-                    $items = $this->extractInfoParams($info, $params);
-                    
-                    if(empty($items)) {
-                        throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified');
-                    }
-                    
-                    if(count($items) == 1) {
-                        throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
-                    }
-                    
-                    if(count($items) == 2) {
-                        throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
-                    }
-                    
-                    $info->title = $items[0];
-                    $info->author = $items[1];
-                    $info->version = $items[2];
-                    break;
-                case 'description':
-                    $info->description = $this->extractDescription($info, $params);
-                    break;
+            foreach($attributes as $parts) {
+                if(count($parts) !== 4) {
+                    throw new Exceptions\InvalidSourceException("Attributes invalid: ".count($parts)." - ".print_r($parts, true));
+                }
+
+                $type = $parts[1];
+                $params = $parts[2];
+                $infoFound = false;
+
+                switch(strtolower(trim($type))) {
+                    case 'info':
+                        $infoFound = true;
+                        $items = $this->extractInfoParams($info, $params);
+
+                        if(empty($items)) {
+                            throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified');
+                        }
+
+                        if(count($items) == 1) {
+                            throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
+                        }
+
+                        if(count($items) == 2) {
+                            throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
+                        }
+
+                        $info->title = $items[0];
+                        $info->author = $items[1];
+                        $info->version = $items[2];
+                        break;
+                    case 'description':
+                        $info->description = $this->extractDescription($info, $params);
+                        break;
+                }
             }
             
             if(!$infoFound) {
