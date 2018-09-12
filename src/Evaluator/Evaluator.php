@@ -88,7 +88,7 @@ class Evaluator {
             }
             preg_match_all($paramsRegex, $attrLine, $parts, PREG_SET_ORDER, 0);
             if(count($parts) !== 4) {
-                throw new Exceptions\InvalidSourceException("Attributes invalid");
+                throw new Exceptions\InvalidSourceException("Attributes invalid: ".print_r($parts, true));
             }
             
             $type = $parts[1];
