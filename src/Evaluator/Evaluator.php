@@ -103,15 +103,15 @@ class Evaluator {
                         $items = $this->extractInfoParams($info, $params);
 
                         if(empty($items)) {
-                            throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified');
+                            throw new Exceptions\NoInfoTitleException('Info attribute invalid, no title specified '.count($items)." - ".print_r($items, true));
                         }
 
                         if(count($items) == 1) {
-                            throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified');
+                            throw new Exceptions\NoInfoAuthorException('Info attribute invalid, no author specified '.count($items)." - ".print_r($items, true));
                         }
 
                         if(count($items) == 2) {
-                            throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified');
+                            throw new Exceptions\NoInfoVersionException('Info attribute invalid, no version specified '.count($items)." - ".print_r($items, true));
                         }
 
                         $info->title = $items[0];
