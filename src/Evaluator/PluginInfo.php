@@ -7,4 +7,5 @@ class PluginInfo {
     public $version;
     public $author;
     public $namespace;
+    public $description;
 }

@@ -48,6 +48,16 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals("0.1.2", $pluginInfo->version);
     }
     
+    function testGetVersion5() {
+        $source = $this->getMockSource('TestPlugin5');
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $pluginInfo = $evaluator->evaluate($source);
+        
+        $this->assertEquals("0.1.1", $pluginInfo->version);
+    }
+    
     function testGetAuthor() {
         $source = $this->getMockSource('TestPlugin');
         
