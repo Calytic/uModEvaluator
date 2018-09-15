@@ -93,7 +93,7 @@ class Evaluator {
             }
             preg_match_all($paramsRegex, $attrLine, $attributes, PREG_SET_ORDER, 0);
             foreach($attributes as $parts) {
-                if(count($parts) !== 4) {
+                if(count($parts) < 3) {
                     throw new Exceptions\InvalidSourceException("Attributes invalid: ".count($parts)." - ".print_r($parts, true));
                 }
 

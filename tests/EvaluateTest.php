@@ -82,6 +82,20 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals("description", $pluginInfo->description);
     }
     
+    function testGetAll8() {
+        $source = $this->getMockSource('TestPlugin8');
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $pluginInfo = $evaluator->evaluate($source);
+        
+        $this->assertEquals("1.2.1", $pluginInfo->version);
+        $this->assertEquals("Calytic", $pluginInfo->author);
+        $this->assertEquals("TestPlugin8", $pluginInfo->className);
+        $this->assertEquals("TestPlugin8", $pluginInfo->title);
+        $this->assertEquals("hello' world", $pluginInfo->description);
+    }
+    
     function testGetDescription6() {
         $source = $this->getMockSource('TestPlugin6');
         
