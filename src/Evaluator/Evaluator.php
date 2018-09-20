@@ -80,10 +80,10 @@ class Evaluator {
         preg_match_all($attrRegex, $source, $attrLines, PREG_SET_ORDER, 0);
         
         if(count($attrLines) == 0) {
-            throw new Exceptions\NoInfoAttributeException('Info attribute invalid or not found');
+            throw new Exceptions\NoInfoAttributeException('Info attribute not found');
         }
         
-        $paramsRegex = '/(\w+)(\([^\)]*?(?:(?:(\'|")[^\'"]*?\3)[^\)]*?)*\))/m';
+        $paramsRegex = '/(\w+)\s*(\([^\)]*?(?:(?:(\'|")[^\'"]*?\3)[^\)]*?)*\))/m';
         
         $infoFound = false;
         
@@ -91,6 +91,7 @@ class Evaluator {
             if(is_array($attrLine)) {
                 $attrLine = $attrLine[0];
             }
+            
             preg_match_all($paramsRegex, $attrLine, $attributes, PREG_SET_ORDER, 0);
             foreach($attributes as $parts) {
                 if(count($parts) < 3) {
@@ -100,8 +101,6 @@ class Evaluator {
                 $type = $parts[1];
                 $params = $parts[2];
                 
-                
-
                 switch(strtolower(trim($type))) {
                     case 'info':
                         $infoFound = true;
