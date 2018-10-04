@@ -106,7 +106,7 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals("0.1.7", $pluginInfo->version);
         $this->assertEquals("Calytic", $pluginInfo->author);
         $this->assertEquals("Bank", $pluginInfo->className);
-        $this->assertEquals("Bank", $pluginInfo->title);
+        $this->assertEquals("Bank's For All", $pluginInfo->title);
         $this->assertEquals("Safe player storage", $pluginInfo->description);
     }
     

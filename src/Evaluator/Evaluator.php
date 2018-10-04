@@ -75,7 +75,7 @@ class Evaluator {
     private function extractClassAttributes(PluginInfo $info, $source, $end) {
         $source = substr($source, 0, $end);
         
-        $attrRegex = '/\[([^\]]*?(?:(?:(\'|")[^\'"]*?\2)[^\]]*?)*)\]/';
+        $attrRegex = '/\[([^\]]*?(?:(?:(")[^"]*?\2)[^\]]*?)*)\]/';
         
         preg_match_all($attrRegex, $source, $attrLines, PREG_SET_ORDER, 0);
         
@@ -83,7 +83,7 @@ class Evaluator {
             throw new Exceptions\NoInfoAttributeException('Info attribute not found');
         }
         
-        $paramsRegex = '/(\w+)\s*(\([^\)]*?(?:(?:(\'|")[^\'"]*?\3)[^\)]*?)*\))/m';
+        $paramsRegex = '/(\w+)\s*(\([^\)]*?(?:(?:(\'|")[^"]*?\3)[^\)]*?)*\))/m';
         
         $infoFound = false;
         
