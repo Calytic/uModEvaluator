@@ -160,6 +160,16 @@ class EvaluateTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals("TestPlugin1", $pluginInfo->title);
     }
     
+    function testInvalidSource() {
+        $source = $this->getMockSource('InvalidSource');
+        
+        $this->expectException(\uMod\Evaluator\Exceptions\InvalidSourceException::class);
+        
+        $evaluator = new \uMod\Evaluator\Evaluator();
+        
+        $evaluator->evaluate($source);
+    }
+    
     function testInvalidAuthor() {
         $source = $this->getMockSource('InvalidAuthor');
         

@@ -14,6 +14,13 @@ class Evaluator {
     public function evaluate($source) {
         $pluginInfo = new PluginInfo();
         
+        $namespaceDefinitionStart = strpos($source, 'namespace');
+        if($namespaceDefinitionStart === false) {
+            throw new Exceptions\InvalidSourceException("No namespace definition found");
+        }
+        
+        $source = substr($source, $namespaceDefinitionStart);
+        
         $this->extractNamespace($pluginInfo, $source);
         $end = $this->extractClassName($pluginInfo, $source);
         $this->extractClassAttributes($pluginInfo, $source, $end);
